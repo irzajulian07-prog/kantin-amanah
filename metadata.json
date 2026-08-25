@@ -1,0 +1,6 @@
+{
+  "name": "AMANAH – Smart Mart",
+  "description": "Sistem Kantin Digital Pondok Pesantren AMANAH Smart Mart - Kasir POS RFID + PIN, Top Up Saldo Multi-Metode (QRIS, Transfer, Tunai), Inventori & Stok Opname, Dashboard Real-time Recharts, serta 8 Modul Laporan dengan Ekspor Excel & PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

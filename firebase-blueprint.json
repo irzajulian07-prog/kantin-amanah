@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AMANAH Smart Mart Firestore Schema Blueprint",
+  "description": "Production Firestore database schema blueprint for AMANAH Smart Mart cashless boarding school system",
+  "entities": {
+    "santriwati": {
+      "collection": "santriwati",
+      "description": "Master data identitas santriwati, kartu RFID UID, PIN hash, saldo kantin, dan limit harian",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "nis": { "type": "string", "required": true },
+        "nisn": { "type": "string", "required": false },
+        "name": { "type": "string", "required": true },
+        "classRoom": { "type": "string", "required": true },
+        "dormitory": { "type": "string", "required": true },
+        "rfidUid": { "type": "string", "required": true },
+        "guardianName": { "type": "string", "required": false },
+        "guardianPhone": { "type": "string", "required": false },
+        "balance": { "type": "number", "minimum": 0, "required": true },
+        "dailyLimit": { "type": "number", "minimum": 0, "required": true },
+        "status": { "type": "string", "enum": ["active", "inactive"], "required": true },
+        "pinHash": { "type": "string", "required": true },
+        "pinFailedAttempts": { "type": "number", "minimum": 0, "required": false },
+        "pinLockedUntil": { "type": "string", "required": false },
+        "photoURL": { "type": "string", "required": false },
+        "notes": { "type": "string", "required": false },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "products": {
+      "collection": "products",
+      "description": "Katalog produk kantin/mart santriwati",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "sku": { "type": "string", "required": true },
+        "barcode": { "type": "string", "required": false },
+        "name": { "type": "string", "required": true },
+        "categoryId": { "type": "string", "required": true },
+        "categoryName": { "type": "string", "required": true },
+        "costPrice": { "type": "number", "minimum": 0, "required": true },
+        "sellingPrice": { "type": "number", "minimum": 0, "required": true },
+        "stock": { "type": "number", "minimum": 0, "required": true },
+        "minStock": { "type": "number", "minimum": 0, "required": true },
+        "unit": { "type": "string", "required": true },
+        "status": { "type": "string", "enum": ["active", "inactive"], "required": true },
+        "imageURL": { "type": "string", "required": false },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "categories": {
+      "collection": "categories",
+      "description": "Kategori produk kantin",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "name": { "type": "string", "required": true },
+        "description": { "type": "string", "required": false },
+        "icon": { "type": "string", "required": false },
+        "color": { "type": "string", "required": false },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "suppliers": {
+      "collection": "suppliers",
+      "description": "Data mitra pemasok barang",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "name": { "type": "string", "required": true },
+        "contactPerson": { "type": "string", "required": false },
+        "phone": { "type": "string", "required": true },
+        "email": { "type": "string", "required": false },
+        "address": { "type": "string", "required": false },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "transactions": {
+      "collection": "transactions",
+      "description": "Rekam transaksi kasir POS santriwati",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "invoiceNumber": { "type": "string", "required": true },
+        "santriwatiId": { "type": "string", "required": true },
+        "santriwatiNis": { "type": "string", "required": true },
+        "santriwatiName": { "type": "string", "required": true },
+        "cashierId": { "type": "string", "required": true },
+        "cashierName": { "type": "string", "required": true },
+        "items": { "type": "array", "required": true },
+        "subtotal": { "type": "number", "minimum": 0, "required": true },
+        "discount": { "type": "number", "minimum": 0, "required": false },
+        "totalAmount": { "type": "number", "minimum": 0, "required": true },
+        "paymentMethod": { "type": "string", "required": true },
+        "status": { "type": "string", "enum": ["completed", "void", "refunded"], "required": true },
+        "santriBalanceBefore": { "type": "number", "required": true },
+        "santriBalanceAfter": { "type": "number", "minimum": 0, "required": true },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "topups": {
+      "collection": "topups",
+      "description": "Pengajuan & approval saldo top up",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "topupNumber": { "type": "string", "required": true },
+        "santriId": { "type": "string", "required": true },
+        "santriName": { "type": "string", "required": true },
+        "santriNis": { "type": "string", "required": true },
+        "amount": { "type": "number", "minimum": 1000, "required": true },
+        "paymentMethod": { "type": "string", "enum": ["qris", "transfer", "cash"], "required": true },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"], "required": true },
+        "proofPhotoURL": { "type": "string", "required": false },
+        "approvedBy": { "type": "string", "required": false },
+        "approvedByName": { "type": "string", "required": false },
+        "balanceBefore": { "type": "number", "required": false },
+        "balanceAfter": { "type": "number", "required": false },
+        "createdAt": { "type": "string", "required": true },
+        "updatedAt": { "type": "string", "required": true }
+      }
+    },
+    "stockReceipts": {
+      "collection": "stockReceipts",
+      "description": "Surat penerimaan barang masuk dari supplier",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "receiptNumber": { "type": "string", "required": true },
+        "supplierId": { "type": "string", "required": true },
+        "supplierName": { "type": "string", "required": true },
+        "receivedDate": { "type": "string", "required": true },
+        "items": { "type": "array", "required": true },
+        "totalCost": { "type": "number", "minimum": 0, "required": true },
+        "receivedBy": { "type": "string", "required": true },
+        "receivedByName": { "type": "string", "required": true },
+        "createdAt": { "type": "string", "required": true }
+      }
+    },
+    "stockAdjustments": {
+      "collection": "stockAdjustments",
+      "description": "Riwayat stok opname & penyesuaian fisik",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "productId": { "type": "string", "required": true },
+        "productName": { "type": "string", "required": true },
+        "productSku": { "type": "string", "required": true },
+        "systemStock": { "type": "number", "required": true },
+        "physicalStock": { "type": "number", "minimum": 0, "required": true },
+        "difference": { "type": "number", "required": true },
+        "adjustedBy": { "type": "string", "required": true },
+        "adjustedByName": { "type": "string", "required": true },
+        "createdAt": { "type": "string", "required": true }
+      }
+    },
+    "auditLogs": {
+      "collection": "auditLogs",
+      "description": "Catatan rekam jejak keamanan sistem",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "timestamp": { "type": "string", "required": true },
+        "userId": { "type": "string", "required": true },
+        "userName": { "type": "string", "required": true },
+        "userRole": { "type": "string", "enum": ["admin", "supervisor", "kasir"], "required": true },
+        "action": { "type": "string", "required": true },
+        "module": { "type": "string", "required": true },
+        "details": { "type": "string", "required": true }
+      }
+    },
+    "users": {
+      "collection": "users",
+      "description": "Akun staf, pengelola dan kasir AMANAH Mart",
+      "fields": {
+        "id": { "type": "string", "required": true },
+        "email": { "type": "string", "required": true },
+        "displayName": { "type": "string", "required": true },
+        "role": { "type": "string", "enum": ["admin", "supervisor", "kasir"], "required": true },
+        "status": { "type": "string", "enum": ["active", "inactive"], "required": true },
+        "createdAt": { "type": "string", "required": true }
+      }
+    },
+    "settings": {
+      "collection": "settings",
+      "description": "Konfigurasi global sistem pesantren dan pembayaran",
+      "fields": {
+        "appName": { "type": "string", "required": true },
+        "pesantrenName": { "type": "string", "required": true },
+        "paymentBank": { "type": "string", "required": true },
+        "paymentAccountName": { "type": "string", "required": true },
+        "paymentAccountNumber": { "type": "string", "required": true }
+      }
+    }
+  }
+}
